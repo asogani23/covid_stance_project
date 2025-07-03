@@ -1,30 +1,34 @@
 import pandas as pd
 from transformers import pipeline
 
-#  Load
+# 1) Load
 df = pd.read_csv("Q2_20230202_majority.csv")
 
-#  Peek
+# 2) Peek
 print(df.head())
-#    tweet                                      label_true  label_pred
+#    tweet_id           created_at                        tweet  label_majority   month
 
-#  Shape & info
+# 3) Shape & info
 print("Rows,Cols:", df.shape)
 df.info()
 
-#  Missing check & label balance
+# 4) Missing check & label balance
 print("Missing per column:\n", df.isnull().sum())
-print("Label counts:\n", df["label_true"].value_counts())
+print("Label distribution:\n", df["label_majority"].value_counts())
 
+# 5) Prepare the empty prediction column
+df["label_pred"] = pd.NA
+print("\nAfter adding label_pred column:")
+print(df.head())
 
-#  Initialize on CPU
+# 6) Initialize the HuggingFace pipeline on CPU
 stance_pipe = pipeline(
-    task="text-generation",                
-    model="google/flan-t5-large",          
-    tokenizer="google/flan-t5-large",      
-    device=-1                              
+    task="text-generation",
+    model="google/flan-t5-large",
+    tokenizer="google/flan-t5-large",
+    device=-1
 )
 
-#  Warm-up a dummy run
+# 7) Warm-up a dummy run
 out = stance_pipe("Hello world", max_new_tokens=2)
 print("Pipeline test OK:", out)
