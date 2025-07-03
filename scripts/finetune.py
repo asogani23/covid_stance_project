@@ -1,4 +1,4 @@
-
+# Imports
 import os
 import pandas as pd
 import torch
@@ -49,7 +49,7 @@ def preprocess_function(examples):
     inputs["labels"] = labels["input_ids"]
     return inputs
 
-print("Tokenizing train…")
+print(" Tokenizing train…")
 tokenized_train = train_dataset.map(
     preprocess_function,
     batched=True,
@@ -106,7 +106,7 @@ trainer.train()
 print(" Fine-tuning complete.")
 
 # Predict, clean, and save
-print(" Generating predictions on validation set…")
+print("🔍 Generating predictions on validation set…")
 preds = trainer.predict(tokenized_val)
 raw = tokenizer.batch_decode(preds.predictions, skip_special_tokens=True)
 
