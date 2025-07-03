@@ -48,9 +48,9 @@ def predict_one(tweet: str) -> str:
 
 # Load CSV file
 try:
-    df = pd.read_csv("Q2_20230202_majority 1.csv")
+    df = pd.read_csv("Q2_20230202_majority.csv")
 except FileNotFoundError:
-    print("Error: 'Q2_20230202_majority 1.csv' not found. Please ensure the file is in the correct directory.")
+    print("Error: 'Q2_20230202_majority.csv' not found. Please ensure the file is in the correct directory.")
     exit()
 
 # Create a new column for predictions
