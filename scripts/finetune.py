@@ -66,15 +66,19 @@ training_args = Seq2SeqTrainingArguments(
 )
 
 # Initialize the Trainer
-trainer = Seq2SeqTrainer(
-    model=model,
-    args=training_args,
-    train_dataset=tokenized_train_dataset,
-    eval_dataset=tokenized_val_dataset,
-    tokenizer=tokenizer,
-    data_collator=data_collator,
+training_args = Seq2SeqTrainingArguments(
+    output_dir="./results",
+    eval_strategy="epoch",
+    learning_rate=5e-6,  # Lowered learning rate for stability
+    per_device_train_batch_size=2,
+    per_device_eval_batch_size=2,
+    gradient_accumulation_steps=4,
+    weight_decay=0.01,
+    save_total_limit=3,
+    num_train_epochs=3,
+    predict_with_generate=True,
+    fp16=True, # Keep this for now, but set to False if nan loss persists
 )
-
 # Start fine-tuning
 print("Starting fine-tuning...")
 trainer.train()
