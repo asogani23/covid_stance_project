@@ -2,13 +2,17 @@ from transformers import pipeline
 
 #  Initialize as text2text (for seq2seq models like T5)
 stance_pipe = pipeline(
-    task="text2text-generation",      # ← changed here
+    "text2text-generation",
     model="google/flan-t5-large",
     tokenizer="google/flan-t5-large",
-    device=-1
+    device=-1,
+    # NEW: force greedy decoding
+    do_sample=False,
+    temperature=0.0,
+    top_k=1
 )
 
-#  Define your prompt template
+#  Define prompt template
 PROMPT = (
     'What is the stance of the following tweet with respect to COVID-19 vaccine? '
     'Here is the tweet: "{tweet}" '
@@ -16,16 +20,19 @@ PROMPT = (
 )
 
 def predict_one(tweet: str) -> str:
-    # sanitize quotes to avoid breaking the prompt
     safe = tweet.replace('"', "'")
     inp = PROMPT.format(tweet=safe)
-    out = stance_pipe(inp, max_new_tokens=4)[0]["generated_text"]
-    # simple extraction of one of our three labels
-    for label in ("in-favor", "against", "neutral-or-unclear"):
+    out = stance_pipe(inp, max_new_tokens=3)[0]["generated_text"].strip()
+    # exact-match against our labels
+    for label in ["in-favor","against","neutral-or-unclear"]:
+        if out == label:
+            return label
+    # fallback: pick the first label that *contains* our output
+    for label in ["in-favor","against","neutral-or-unclear"]:
         if label in out:
             return label
-    # fallback
     return "neutral-or-unclear"
+
 
 #  Quick dry run on a couple of examples
 examples = [
