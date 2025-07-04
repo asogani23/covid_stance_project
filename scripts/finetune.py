@@ -1,108 +1,58 @@
 import os
-
 import pandas as pd
-
 import torch
 
-
 from sklearn.model_selection import train_test_split
-
 from sklearn.metrics import classification_report, confusion_matrix
-
 from datasets import Dataset
-
 from sklearn.utils import resample
-
-
-
 from transformers import (
-
     AutoTokenizer,
-
     AutoModelForSeq2SeqLM,
-
     DataCollatorForSeq2Seq,
-
     Seq2SeqTrainingArguments,
-
     Seq2SeqTrainer,
-
 )
 
-
 # Load & split the full dataset
-
 CSV_PATH = "Q2_20230202_majority.csv"
-
 df = pd.read_csv(CSV_PATH)
-
 df = df.rename(columns={"tweet": "input_text", "label_majority": "target_text"})
-
 train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
-
 print(f"→ {len(train_df)} train / {len(val_df)} validation samples")
-
-
 train_dataset = Dataset.from_pandas(train_df)
-
 val_dataset   = Dataset.from_pandas(val_df)
 
 
-
-# OVERSAMPLING
-
-
-
-# Separate the majority and minority classes from the training dataframe
+# OVERSAMPLING 
+# Also separate the majority and minority classes from the training dataframe
 
 df_majority_favor = train_df[train_df.target_text=='in-favor']
-
 df_majority_against = train_df[train_df.target_text=='against']
-
 df_minority_neutral = train_df[train_df.target_text=='neutral-or-unclear']
 
-
 # Determine the size of the largest majority class
-
 n_samples = max(len(df_majority_favor), len(df_majority_against))
 
-
 # Upsample the minority class and the smaller majority class
-
 df_minority_upsampled = resample(df_minority_neutral,
-
                                  replace=True,     # sample with replacement
-
                                  n_samples=n_samples,    # to match majority class
-
                                  random_state=42) # reproducible results
-
-
 df_against_upsampled = resample(df_majority_against,
-
                                 replace=True,
-
                                 n_samples=n_samples,
-
                                 random_state=42)
 
-
 # Combine the balanced classes to create a new training dataframe
-
 train_df_balanced = pd.concat([df_majority_favor, df_against_upsampled, df_minority_upsampled])
-
-
 print(f"→ Original training samples: {len(train_df)}")
-
 print(f"→ Balanced training samples: {len(train_df_balanced)}")
 
-
 # Use the new balanced dataframe to create the training dataset
-
 train_dataset = Dataset.from_pandas(train_df_balanced)
 
 # The validation dataset remains unchanged
-
 val_dataset   = Dataset.from_pandas(val_df)
 
 
