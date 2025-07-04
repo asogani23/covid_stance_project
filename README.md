@@ -8,7 +8,7 @@ cd covid_stance_project
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt  # transformers==4.43.*, datasets==2.*, etc.
 python finetune.py                  # fine-tunes FLAN-T5-Large with oversampling
-
+```
 
 ## Results
 
