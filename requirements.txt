@@ -3,3 +3,6 @@ torch
 datasets
 pandas
 scikit-learn
+pip install pandas==2.2.2 scikit-learn==1.6.1 fsspec==2025.3.2
+pip install fsspec==2025.3.0
+!pip install -q --upgrade transformers[torch] datasets pandas scikit-learn
