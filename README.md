@@ -1,5 +1,15 @@
 # Take-Home-LLM-Assessment-
 
+## Quick Start
+
+```bash
+git clone https://github.com/asogani23/covid_stance_project.git
+cd covid_stance_project
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt  # transformers==4.43.*, datasets==2.*, etc.
+python finetune.py                  # fine-tunes FLAN-T5-Large with oversampling
+
+
 ## Results
 
 The model was first evaluated with a zero-shot baseline. The initial fine-tuning showed a weakness in identifying the "neutral-or-unclear" class due to class imbalance. By implementing an oversampling strategy for the training data, the model's performance on this minority class improved dramatically.
