@@ -106,7 +106,7 @@ trainer.train()
 print(" Fine-tuning complete.")
 
 # Predict, clean, and save
-print("🔍 Generating predictions on validation set…")
+print(" Generating predictions on set…")
 preds = trainer.predict(tokenized_val)
 raw = tokenizer.batch_decode(preds.predictions, skip_special_tokens=True)
 
