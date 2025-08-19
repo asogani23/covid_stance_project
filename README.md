@@ -1,4 +1,4 @@
-# Take-Home-LLM-Assessment-
+# LLM-Project - Covid Stance Assessment
 
 ## Quick Start
 
