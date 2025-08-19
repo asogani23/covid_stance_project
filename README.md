@@ -38,7 +38,7 @@ The model was first evaluated with a zero-shot baseline. The initial fine-tuning
 
 | Label              | Precision | Recall | F1-Score |
 | ------------------ | :-------: | :----: | :------: |
-| in-favor           |   0.80    |  0.76  |   0.78   |
-| against            |   0.58    |  0.84  |   0.69   |
-| **neutral-or-unclear** | **0.58** |  **0.26** |   **0.36** |
-| **Weighted Avg** | **0.69** | **0.69** | **0.67** |
+| in-favor           |   0.80    |  0.76  |   0.8   |
+| against            |   0.58    |  0.84  |   0.7   |
+| **neutral-or-unclear** | **0.58** |  **0.26** |   **0.45** |
+| **Weighted Avg** | **0.69** | **0.69** | **0.78** |
